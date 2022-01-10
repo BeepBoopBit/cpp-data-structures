@@ -24,18 +24,31 @@ public:
             tempHead = tempHead->_next;
         }
     }
+    LinkedList *reverse(){
+        LinkedList *prev = nullptr,
+                   *curr = this,
+                   *next = nullptr;
+        while(curr != nullptr){
+            next = curr->_next;
+            curr->_next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
 private:
     int _data;
     LinkedList *_next;
 };
 
 int main(){
-    LinkedList list;
-    list.push_back(1);
-    list.push_back(2);
-    list.push_back(3);
-    list.push_back(4);
-    list.print();
+    LinkedList *list = new LinkedList(0);
+    list->push_back(1);
+    list->push_back(2);
+    list->push_back(3);
+    list->push_back(4);
+    list = list->reverse();
+    list->print();
 
     return 0;
 }
