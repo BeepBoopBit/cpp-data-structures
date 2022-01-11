@@ -1,45 +1,54 @@
 #include <iostream>
 
-class LinkedList{
+class SinglyLinkedList{
 public:
-    LinkedList(){
+    SinglyLinkedList(){
         _data = 0;
         _next = nullptr;
     }
-    LinkedList(int data){
+    SinglyLinkedList(int data){
         _data = data;
         _next = nullptr;
     }
     void push_back(int data){
-        LinkedList *tempHead = this;
+        SinglyLinkedList *tempHead = this;
         while(tempHead->_next != nullptr){
             tempHead = tempHead->_next;
         }
-        tempHead->_next = new LinkedList(data);
+        tempHead->_next = new SinglyLinkedList(data);
     }
-    LinkedList *push_front(int data){
-        LinkedList *newHead = new LinkedList(data);
+    SinglyLinkedList *push_front(int data){
+        SinglyLinkedList *newHead = new SinglyLinkedList(data);
         newHead->_next = this;
         return newHead;
     }
+    void tPush_front(int data){
+        // create a new list with the current head data
+        SinglyLinkedList *newVal = new SinglyLinkedList(_data);
+        newVal->_next = _next;
+
+        // set the current data to the new data
+        _data = data;
+        _next = newVal;
+    }
     void insert(int index, int data){
-        LinkedList *tempHead = this;
+        SinglyLinkedList *tempHead = this;
         for(int i = 0; i < index-1; ++i){
             tempHead = tempHead->_next;
         }
-        LinkedList *tempNext = tempHead->_next;
-        tempHead->_next = new LinkedList(data);
+        SinglyLinkedList *tempNext = tempHead->_next;
+        tempHead->_next = new SinglyLinkedList(data);
         tempHead->_next->_next = tempNext;
     }
     void print(){
-        LinkedList *tempHead = this;
+        SinglyLinkedList *tempHead = this;
         while(tempHead != nullptr){
             std::cout << tempHead->_data << ' ';
             tempHead = tempHead->_next;
         }
     }
-    LinkedList *reverse(){
-        LinkedList *prev = nullptr,
+    SinglyLinkedList *reverse(){
+        SinglyLinkedList *prev = nullptr,
                    *curr = this,
                    *next = nullptr;
         while(curr != nullptr){
@@ -52,17 +61,17 @@ public:
     }
 private:
     int _data;
-    LinkedList *_next;
+    SinglyLinkedList *_next;
 };
 
 int main(){
-    LinkedList *list = new LinkedList(0);
+    SinglyLinkedList *list = new SinglyLinkedList(0);
     list->push_back(1);
     list->push_back(2);
     list->push_back(3);
     list->push_back(4);
     list->insert(2,20);
-    list = list->push_front(500);
+    list->tPush_front(500);
     list->print();
 
     return 0;
