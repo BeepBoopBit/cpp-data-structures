@@ -62,6 +62,7 @@ int main(){
     list->push_back(3);
     list->push_back(4);
     list->insert(2,20);
+    list = list->push_front(500);
     list->print();
 
     return 0;
