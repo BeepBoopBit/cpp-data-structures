@@ -24,6 +24,24 @@ public:
         // make the _prev value of the newly created data equal to the tempHead;
         tempHead->_next->_prev = tempHead;
     }
+    DoublyLinkedList *push_front(int data){
+        DoublyLinkedList *tempHead = this;
+        DoublyLinkedList *newHead = new DoublyLinkedList(data);
+        newHead->_next = tempHead;
+        tempHead->_prev = newHead;
+        return newHead;
+    }
+    void tPush_front(int data){
+        // create a new list and set it to the previous head
+        DoublyLinkedList *newList = new DoublyLinkedList(_data);
+        newList->_next = _next;
+        newList->_prev = this;
+        
+        // change the current data to the new data
+        _data = data;
+        _next = newList;
+
+    }
     void print(){
         DoublyLinkedList *tempHead = this;
         while(tempHead != nullptr){
@@ -42,6 +60,7 @@ int main(){
     list->push_back(3);
     list->push_back(4);
     list->push_back(5);
+    list->tPush_front(20);
     list->print();
     return 0;
 }
