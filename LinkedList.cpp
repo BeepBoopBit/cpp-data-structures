@@ -17,6 +17,20 @@ public:
         }
         tempHead->_next = new LinkedList(data);
     }
+    LinkedList *push_front(int data){
+        LinkedList *newHead = new LinkedList(data);
+        newHead->_next = this;
+        return newHead;
+    }
+    void insert(int index, int data){
+        LinkedList *tempHead = this;
+        for(int i = 0; i < index-1; ++i){
+            tempHead = tempHead->_next;
+        }
+        LinkedList *tempNext = tempHead->_next;
+        tempHead->_next = new LinkedList(data);
+        tempHead->_next->_next = tempNext;
+    }
     void print(){
         LinkedList *tempHead = this;
         while(tempHead != nullptr){
@@ -47,7 +61,8 @@ int main(){
     list->push_back(2);
     list->push_back(3);
     list->push_back(4);
-    list = list->reverse();
+    list->insert(2,20);
+    list = list->push_front(500);
     list->print();
 
     return 0;
