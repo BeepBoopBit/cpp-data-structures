@@ -32,6 +32,10 @@ public:
         _next = newVal;
     }
     void insert(int index, int data){
+        if(index == 0){
+            tPush_front(data);
+            return;
+        }
         SinglyLinkedList *tempHead = this;
         for(int i = 0; i < index-1; ++i){
             tempHead = tempHead->_next;
@@ -67,11 +71,8 @@ private:
 int main(){
     SinglyLinkedList *list = new SinglyLinkedList(0);
     list->push_back(1);
-    list->push_back(2);
-    list->push_back(3);
-    list->push_back(4);
-    list->insert(2,20);
-    list->tPush_front(500);
+    list->insert(1,5);
+    list->push_back(1);
     list->print();
 
     return 0;
