@@ -62,6 +62,16 @@ public:
             tempHead = tempHead->_next;
         }
     }
+    void rPrint(){
+        DoublyLinkedList *tempHead = this;
+        while(tempHead->_next != nullptr){
+            tempHead = tempHead->_next;
+        }
+        while(tempHead != nullptr){
+            std::cout << tempHead->_data << ' ';
+            tempHead = tempHead->_prev;
+        }
+    }
 private:
     int _data;
     DoublyLinkedList *_prev, *_next;
@@ -75,5 +85,7 @@ int main(){
     list->push_back(5);
     list = list->reverse();
     list->print();
+    std::cout << std::endl;
+    list->rPrint();
     return 0;
 }
