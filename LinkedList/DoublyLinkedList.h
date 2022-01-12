@@ -52,6 +52,15 @@ public: // Utility
     int size(){
         return _size;
     }
+    void changeData(int data){
+        _data = data;
+    }
+    DoublyLinkedList *next(){
+        return _next;
+    }
+    int getData(){
+        return _data;
+    }
     DoublyLinkedList *reverse(){
         DoublyLinkedList *prev = nullptr,
                          *curr = this,
