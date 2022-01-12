@@ -13,12 +13,12 @@ void addTwoList(){
     // create a list starting from 0 to 5 inclusively
     SinglyLinkedList *list01 = getList(0,5);
     list01->print();
-    std::cout << std::endl;
+    std::cout << std::endl << list01->size() << std::endl;
     
     // create a list starting from 6 to 11 inclusively
     SinglyLinkedList *list02 = getList(6,11);
     list02->print();
-    std::cout << std::endl;
+    std::cout << std::endl << list02->size() << std::endl;
 
     // create the list to hold the result
     SinglyLinkedList *result = new SinglyLinkedList(0);

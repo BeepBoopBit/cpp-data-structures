@@ -15,6 +15,7 @@ public:
         _prev = nullptr;
         _next = nullptr;
     }
+public: // Insert and Pushing
     void push_back(int data){
         // create a temporary variable
         DoublyLinkedList *tempHead = this;
@@ -26,6 +27,7 @@ public:
         tempHead->_next = new DoublyLinkedList(data);
         // make the _prev value of the newly created data equal to the tempHead;
         tempHead->_next->_prev = tempHead;
+        ++_size;
     }
     DoublyLinkedList *push_front(int data){
         DoublyLinkedList *tempHead = this;
@@ -33,6 +35,7 @@ public:
         newHead->_next = tempHead;
         tempHead->_prev = newHead;
         return newHead;
+        ++_size;
     }
     void tPush_front(int data){
         // create a new list and set it to the previous head
@@ -43,7 +46,11 @@ public:
         // change the current data to the new data
         _data = data;
         _next = newList;
-
+        ++_size;
+    }
+public: // Utility
+    int size(){
+        return _size;
     }
     DoublyLinkedList *reverse(){
         DoublyLinkedList *prev = nullptr,
@@ -76,7 +83,8 @@ public:
         }
     }
 private:
-    int _data;
+    int _data,
+        _size = 1;
     DoublyLinkedList *_prev, *_next;
 };
 

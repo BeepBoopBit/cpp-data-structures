@@ -8,12 +8,10 @@ public: // Constructor
     SinglyLinkedList(){
         _data = 0;
         _next = nullptr;
-        ++_size;
     }
     SinglyLinkedList(int data){
         _data = data;
         _next = nullptr;
-        ++_size;
     }
 public: // Insert and Pushing
     void push_back(int data){
@@ -101,7 +99,8 @@ public: // Utility
         }
     }
 private:
-    int _data, _size;
+    int _data,
+        _size = 1;
     SinglyLinkedList *_next;
 };
 
