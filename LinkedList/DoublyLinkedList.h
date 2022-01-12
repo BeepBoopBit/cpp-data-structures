@@ -1,3 +1,6 @@
+#ifndef DOUBLY_LINKED_LIST_H
+#define DOUBLY_LINKED_LIST_H
+
 #include <iostream>
 
 class DoublyLinkedList{
@@ -77,15 +80,4 @@ private:
     DoublyLinkedList *_prev, *_next;
 };
 
-int main(){
-    DoublyLinkedList *list = new DoublyLinkedList(1);
-    list->push_back(2);
-    list->push_back(3);
-    list->push_back(4);
-    list->push_back(5);
-    list = list->reverse();
-    list->print();
-    std::cout << std::endl;
-    list->rPrint();
-    return 0;
-}
+#endif // DOUBLY_LINKED_LIST_H

@@ -1,3 +1,6 @@
+#ifndef SINGLY_LINKED_LIST_H
+#define SINGLY_LINKED_LIST_H
+
 #include <iostream>
 
 class SinglyLinkedList{
@@ -5,10 +8,12 @@ public:
     SinglyLinkedList(){
         _data = 0;
         _next = nullptr;
+        ++_size;
     }
     SinglyLinkedList(int data){
         _data = data;
         _next = nullptr;
+        ++_size;
     }
     void push_back(int data){
         // Iterate through until before the last element
@@ -18,6 +23,7 @@ public:
         }
         // make its '_next' be equal to a new list data
         tempHead->_next = new SinglyLinkedList(data);
+        ++_size;
     }
     SinglyLinkedList *push_front(int data){
         // create a new list and store it
@@ -26,6 +32,7 @@ public:
         newHead->_next = this;
         // return the new head
         return newHead;
+        ++_size;
     }
     void tPush_front(int data){
         // create a new list with the current head data
@@ -35,6 +42,7 @@ public:
         // set the current data to the new data
         _data = data;
         _next = newVal;
+        ++_size;
     }
     void insert(int index, int data){
         // if the index is '0' then change the 'head'
@@ -53,6 +61,7 @@ public:
         tempHead->_next = new SinglyLinkedList(data);
         // assigned the value of the _next of the newly created variable to the temporary variable
         tempHead->_next->_next = tempNext;
+        ++_size;
     }
     void print(){
         SinglyLinkedList *tempHead = this;
@@ -61,7 +70,18 @@ public:
             tempHead = tempHead->_next;
         }
     }
-
+    int size(){
+        return _size;
+    }
+    SinglyLinkedList *next(){
+        return _next;
+    }
+    void changedData(int data){
+        _data = data;
+    }
+    int getData(){
+        return _data;
+    }
     SinglyLinkedList *reverse(){
         SinglyLinkedList *prev = nullptr,
                          *curr = this,
@@ -79,16 +99,8 @@ public:
         return prev;
     }
 private:
-    int _data;
+    int _data, _size;
     SinglyLinkedList *_next;
 };
 
-int main(){
-    SinglyLinkedList *list = new SinglyLinkedList(0);
-    list->push_back(1);
-    list->insert(1,5);
-    list->push_back(1);
-    list->print();
-
-    return 0;
-}
+#endif // SINGLY_LINKED_LIST_H
