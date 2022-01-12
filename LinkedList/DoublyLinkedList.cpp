@@ -42,6 +42,19 @@ public:
         _next = newList;
 
     }
+    DoublyLinkedList *reverse(){
+        DoublyLinkedList *prev = nullptr,
+                         *curr = this,
+                         *next = nullptr;
+        while(curr != nullptr){
+            next = curr->_next;
+            curr->_next = prev;
+            curr->_prev = next;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
     void print(){
         DoublyLinkedList *tempHead = this;
         while(tempHead != nullptr){
@@ -60,7 +73,7 @@ int main(){
     list->push_back(3);
     list->push_back(4);
     list->push_back(5);
-    list->tPush_front(20);
+    list = list->reverse();
     list->print();
     return 0;
 }
