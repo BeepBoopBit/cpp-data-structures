@@ -4,17 +4,16 @@
 #include <iostream>
 
 class SinglyLinkedList{
-public:
+public: // Constructor
     SinglyLinkedList(){
         _data = 0;
         _next = nullptr;
-        ++_size;
     }
     SinglyLinkedList(int data){
         _data = data;
         _next = nullptr;
-        ++_size;
     }
+public: // Insert and Pushing
     void push_back(int data){
         // Iterate through until before the last element
         SinglyLinkedList *tempHead = this;
@@ -63,13 +62,7 @@ public:
         tempHead->_next->_next = tempNext;
         ++_size;
     }
-    void print(){
-        SinglyLinkedList *tempHead = this;
-        while(tempHead != nullptr){
-            std::cout << tempHead->_data << ' ';
-            tempHead = tempHead->_next;
-        }
-    }
+public: // Utility
     int size(){
         return _size;
     }
@@ -98,8 +91,16 @@ public:
         }
         return prev;
     }
+    void print(){
+        SinglyLinkedList *tempHead = this;
+        while(tempHead != nullptr){
+            std::cout << tempHead->_data << ' ';
+            tempHead = tempHead->_next;
+        }
+    }
 private:
-    int _data, _size;
+    int _data,
+        _size = 1;
     SinglyLinkedList *_next;
 };
 
