@@ -67,10 +67,7 @@ private:
 int main(){
     SinglyLinkedList *list = new SinglyLinkedList(0);
     list->push_back(1);
-    list->push_back(2);
-    list->push_back(3);
-    list->push_back(4);
-    list->insert(2,20);
+    list->insert(0,5);
     list->tPush_front(500);
     list->print();
 
