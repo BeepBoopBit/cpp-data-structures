@@ -1,3 +1,6 @@
+#ifndef DOUBLY_LINKED_LIST_H
+#define DOUBLY_LINKED_LIST_H
+
 #include <iostream>
 
 class DoublyLinkedList{
@@ -42,6 +45,19 @@ public:
         _next = newList;
 
     }
+    DoublyLinkedList *reverse(){
+        DoublyLinkedList *prev = nullptr,
+                         *curr = this,
+                         *next = nullptr;
+        while(curr != nullptr){
+            next = curr->_next;
+            curr->_next = prev;
+            curr->_prev = next;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
     void print(){
         DoublyLinkedList *tempHead = this;
         while(tempHead != nullptr){
@@ -49,18 +65,19 @@ public:
             tempHead = tempHead->_next;
         }
     }
+    void rPrint(){
+        DoublyLinkedList *tempHead = this;
+        while(tempHead->_next != nullptr){
+            tempHead = tempHead->_next;
+        }
+        while(tempHead != nullptr){
+            std::cout << tempHead->_data << ' ';
+            tempHead = tempHead->_prev;
+        }
+    }
 private:
     int _data;
     DoublyLinkedList *_prev, *_next;
 };
 
-int main(){
-    DoublyLinkedList *list = new DoublyLinkedList(1);
-    list->push_back(2);
-    list->push_back(3);
-    list->push_back(4);
-    list->push_back(5);
-    list->tPush_front(20);
-    list->print();
-    return 0;
-}
+#endif // DOUBLY_LINKED_LIST_H
