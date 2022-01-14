@@ -100,7 +100,7 @@ public: // Utility
     }
     void remove(int index){
         SinglyLinkedList *temp = this;
-        for(int i = 0; i < index; ++i){
+        for(int i = 0; i < index-1; ++i){
             temp = temp->_next;
         }
         {
