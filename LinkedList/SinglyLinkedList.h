@@ -98,6 +98,17 @@ public: // Utility
             tempHead = tempHead->_next;
         }
     }
+    void remove(int index){
+        SinglyLinkedList *temp = this;
+        for(int i = 0; i < index-1; ++i){
+            temp = temp->_next;
+        }
+        {
+            SinglyLinkedList *tempNext = temp->_next->_next;
+            delete temp->_next;
+            temp->_next = tempNext;
+        }
+    }
 private:
     int _data,
         _size = 1;
