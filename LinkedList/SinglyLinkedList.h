@@ -109,6 +109,21 @@ public: // Utility
             temp->_next = tempNext;
         }
     }
+    void sort(){
+        SinglyLinkedList *temp = this;
+        while(temp != nullptr){
+            SinglyLinkedList *temp01 = this;
+            while(temp01->next() != nullptr){
+                if(temp01->getData() > temp01->next()->getData()){
+                    int tempData = temp01->getData();
+                    temp01->changedData(temp01->next()->getData());
+                    temp01->next()->changedData(tempData);
+                }   
+                temp01 = temp01->next();
+            }
+            temp = temp->next();
+        }
+    }
 private:
     int _data,
         _size = 1;
