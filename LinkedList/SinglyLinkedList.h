@@ -4,130 +4,138 @@
 #include <iostream>
 
 class SinglyLinkedList{
-public: // Constructor
-    SinglyLinkedList(){
-        _data = 0;
-        _next = nullptr;
-    }
-    SinglyLinkedList(int data){
-        _data = data;
-        _next = nullptr;
-    }
-public: // Insert and Pushing
-    void push_back(int data){
-        // Iterate through until before the last element
-        SinglyLinkedList *tempHead = this;
-        while(tempHead->_next != nullptr){
-            tempHead = tempHead->_next;
-        }
-        // make its '_next' be equal to a new list data
-        tempHead->_next = new SinglyLinkedList(data);
-        ++_size;
-    }
-    SinglyLinkedList *push_front(int data){
-        // create a new list and store it
-        SinglyLinkedList *newHead = new SinglyLinkedList(data);
-        // make the value of '_next' point to the current head
-        newHead->_next = this;
-        // return the new head
-        return newHead;
-        ++_size;
-    }
-    void tPush_front(int data){
-        // create a new list with the current head data
-        SinglyLinkedList *newVal = new SinglyLinkedList(_data);
-        newVal->_next = _next;
 
-        // set the current data to the new data
-        _data = data;
-        _next = newVal;
+private: // Node
+    struct Node{
+        int value;
+        Node *next = nullptr;
+    };
+
+public: // constructors
+    SinglyLinkedList(){
+        _head = nullptr;
+        _tail = nullptr;
+    }
+
+
+public: // functions
+    void push_front(int value){
+        // store the current head
+        Node *prevHead = _head;
+        
+        // replace the current head with a new node
+        _head = createNewNode();
+
+        // assign its value to be the new value
+        _head->value = value;
+
+        // assign the value of the new head to the previous head;
+        _head->next = prevHead;
+
+        // if it's the first data
+        if(_tail == nullptr){
+            _tail = _head;
+        }
         ++_size;
     }
-    void insert(int index, int data){
-        // if the index is '0' then change the 'head'
-        if(index == 0){
-            tPush_front(data);
-            return;
+
+    void push_back(int value){
+        if(_tail == nullptr){
+            push_front(value);
+        }else{
+            _tail->next = createNewNode();
+            _tail->next->value = value;
+            _tail = _tail->next;
         }
-        // iterate until the specified index - 1
-        SinglyLinkedList *tempHead = this;
-        for(int i = 0; i < index-1; ++i){
-            tempHead = tempHead->_next;
-        }
-        // create a temporary variable to be the next of tempHead
-        SinglyLinkedList *tempNext = tempHead->_next;
-        // make the temporary _next variable be equal to the new variable 
-        tempHead->_next = new SinglyLinkedList(data);
-        // assigned the value of the _next of the newly created variable to the temporary variable
-        tempHead->_next->_next = tempNext;
         ++_size;
     }
-public: // Utility
-    int size(){
-        return _size;
-    }
-    SinglyLinkedList *next(){
-        return _next;
-    }
-    void changedData(int data){
-        _data = data;
-    }
-    int getData(){
-        return _data;
-    }
-    SinglyLinkedList *reverse(){
-        SinglyLinkedList *prev = nullptr,
-                         *curr = this,
-                         *next = nullptr;
-        while(curr != nullptr){
-            // make next point to the current next
-            next = curr->_next;
-            // make the current next point to the prev list
-            curr->_next = prev;
-            // make the prev be equal to the current list
-            prev = curr;
-            // make current point to the next list
-            curr = next;
+
+    void pop_back(){
+        Node *tempHead = _head;
+        while(tempHead->next->next != nullptr){
+            tempHead = tempHead->next;
         }
-        return prev;
+        delete tempHead->next;
+        _tail = tempHead;
+        tempHead->next = nullptr;
+        --_size;
     }
-    void print(){
-        SinglyLinkedList *tempHead = this;
-        while(tempHead != nullptr){
-            std::cout << tempHead->_data << ' ';
-            tempHead = tempHead->_next;
-        }
+
+    void pop_front(){
+        Node *tempHead = _head;
+        _head = _head->next;
+        delete tempHead;
+        --_size;
     }
-    void remove(int index){
-        SinglyLinkedList *temp = this;
-        for(int i = 0; i < index-1; ++i){
-            temp = temp->_next;
-        }
-        {
-            SinglyLinkedList *tempNext = temp->_next->_next;
-            delete temp->_next;
-            temp->_next = tempNext;
-        }
-    }
-    void sort(){
-        SinglyLinkedList *temp = this;
-        while(temp != nullptr){
-            SinglyLinkedList *temp01 = this;
-            while(temp01->next() != nullptr){
-                if(temp01->getData() > temp01->next()->getData()){
-                    int tempData = temp01->getData();
-                    temp01->changedData(temp01->next()->getData());
-                    temp01->next()->changedData(tempData);
-                }   
-                temp01 = temp01->next();
+
+    void removeAt(int index){
+        if(index >= _size){
+            std::cout << "Index out-of-bounce\n";
+            exit(-1);
+        }else if(index == _size-1){
+            pop_back();
+        }else if(index == 0){
+            pop_front();
+        }else{
+            Node *tempHead = _head;
+            // iterate through the list until you are at the index
+            for(int i = 0; i < index-1; ++i){
+                tempHead = tempHead->next;
             }
-            temp = temp->next();
+            Node *tempNodeNext = tempHead->next;
+            tempHead->next = tempHead->next->next;
+            delete tempNodeNext;
         }
+        --_size;
     }
+
+public: // getters
+    int front(){
+        if(_head == nullptr){
+            std::cout << "Index out-of-bounce\n";
+            exit(-1);
+        }
+        return _head->value;
+    }
+    int back(){
+        if(_tail == nullptr){
+            std::cout << "Index out-of-bounce\n";
+            exit(-1);
+        }
+        return _tail->value;
+    }
+
+    int getValueAt(int index){
+        if(index > _size){
+            std::cout << "Index out-of-bounce\n";
+            exit(-1);
+        }
+        Node *tempHead = _head;
+        for(int i = 0; i < index; ++i){
+            tempHead = tempHead->next;
+        }
+        return tempHead->value;
+    }
+
+public: // Debug
+    void print(){
+        Node *tempHead = _head;
+        while(tempHead != nullptr){
+            std::cout << tempHead->value << ' ';
+            tempHead = tempHead->next;
+        }
+        std::cout << std::endl;
+    }
+
+private: // Auxillary FUnction
+    Node *createNewNode(){
+        return new Node();
+    }
+
 private:
-    int _data,
-        _size = 1;
-    SinglyLinkedList *_next;
+    Node *_head, *_tail;
+    int _size = 0;
+
 };
 
 #endif // SINGLY_LINKED_LIST_H
