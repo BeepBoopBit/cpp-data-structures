@@ -35,6 +35,10 @@ public:
         ++_size;
     }
 
+    int peek(){
+        return _top->value;
+    }
+
     int size(){
         return _size;
     }
