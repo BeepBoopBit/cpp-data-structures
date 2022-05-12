@@ -4,97 +4,149 @@
 #include <iostream>
 
 class DoublyLinkedList{
+private:
+    struct Node{
+        int value;
+        Node *prev, *next;
+    };
+
 public:
     DoublyLinkedList(){
-        _data = 0;
-        _prev = nullptr;
-        _next = nullptr;
+        _head = nullptr;
+        _tail = nullptr;
+        _size = 0;
     }
-    DoublyLinkedList(int data){
-        _data = data;
-        _prev = nullptr;
-        _next = nullptr;
-    }
-public: // Insert and Pushing
-    void push_back(int data){
-        // create a temporary variable
-        DoublyLinkedList *tempHead = this;
-        // get to the before the last element of the list
-        while(tempHead->_next != nullptr){
-            tempHead = tempHead->_next;
+
+public:
+    void push_front(int value){
+        Node *tempHead = _head;
+        _head = createNewNode(value);
+        _head->next = tempHead;
+        // _head->prev = nullptr; // already done in createNewNode
+        if(tempHead != nullptr){
+            tempHead->prev = _head;
+        }else{
+            _tail = _head;
         }
-        // make the _next value equal to the newly created list data
-        tempHead->_next = new DoublyLinkedList(data);
-        // make the _prev value of the newly created data equal to the tempHead;
-        tempHead->_next->_prev = tempHead;
         ++_size;
     }
-    DoublyLinkedList *push_front(int data){
-        DoublyLinkedList *tempHead = this;
-        DoublyLinkedList *newHead = new DoublyLinkedList(data);
-        newHead->_next = tempHead;
-        tempHead->_prev = newHead;
-        return newHead;
-        ++_size;
-    }
-    void tPush_front(int data){
-        // create a new list and set it to the previous head
-        DoublyLinkedList *newList = new DoublyLinkedList(_data);
-        newList->_next = _next;
-        newList->_prev = this;
-        
-        // change the current data to the new data
-        _data = data;
-        _next = newList;
-        ++_size;
-    }
-public: // Utility
-    int size(){
-        return _size;
-    }
-    void changeData(int data){
-        _data = data;
-    }
-    DoublyLinkedList *next(){
-        return _next;
-    }
-    int getData(){
-        return _data;
-    }
-    DoublyLinkedList *reverse(){
-        DoublyLinkedList *prev = nullptr,
-                         *curr = this,
-                         *next = nullptr;
-        while(curr != nullptr){
-            next = curr->_next;
-            curr->_next = prev;
-            curr->_prev = next;
-            prev = curr;
-            curr = next;
+
+    void push_back(int value){
+        if(_tail == nullptr){
+            push_front(value);
+        }else{
+            _tail->next = createNewNode(value, _tail);
+            _tail = _tail->next;
         }
-        return prev;
+        ++_size;
     }
+
+    void pop_front(){
+        Node *tempHead = _head;
+        _head = _head->next;
+        _head->prev = nullptr;
+        delete tempHead;
+        --_size;
+    }
+
+    void pop_back(){
+        Node *tempTail = _tail;
+        _tail = _tail->prev;
+        _tail->next = nullptr;
+        delete tempTail;
+        --_size;
+    }
+    void remove(int value){
+        Node *tempHead = _head;
+        while(tempHead != nullptr){
+            if(tempHead->value == value){
+                break;
+            }
+            tempHead = tempHead->next;
+        }
+
+        if(tempHead == _head){
+            pop_front();
+        }else if(tempHead == _tail){
+            pop_back();
+        }else{
+            // assign the tempHead before the value to be removed
+            tempHead = tempHead->prev;
+
+            // get the value to be removed
+            Node *tempNode = tempHead->next;
+
+            // make the next of the tempHead be the next of the value to be removed
+            tempHead->next = tempNode->next;
+
+            // make the previous of the new next node of tempHead be the tempHead;
+            tempHead->next->prev = tempHead;
+
+            // delete the tempNode
+            delete tempNode;
+        }
+        --_size;
+    }
+
+    void removeAt(int index){
+        if(index == 0){
+            pop_front();
+        }else if(index == _size-1){
+            pop_back();
+        }else if(index >= _size){
+            std::cout << "Index out-of-bounce\n";
+            exit(-1);
+        }else{
+            Node *tempHead = _head;
+            for(int i = 0; i < index-1; ++i){
+                tempHead = tempHead->next;
+            }
+            // get the value to be remove
+            Node *tempNode = tempHead->next;
+
+            // assigned the tempHead next value to the next value of the tempNode 
+            tempHead->next = tempNode->next;
+
+            // initialize the previous value of the next node of tempNode to the current tempHead
+            tempHead->next->prev = tempHead;
+
+            delete tempNode;
+        }
+    }
+
+public: // debug
     void print(){
-        DoublyLinkedList *tempHead = this;
+        Node *tempHead = _head;
         while(tempHead != nullptr){
-            std::cout << tempHead->_data << ' ';
-            tempHead = tempHead->_next;
+            std::cout << tempHead->value << ' ';
+            tempHead = tempHead->next;
         }
+        std::cout << std::endl;
     }
-    void rPrint(){
-        DoublyLinkedList *tempHead = this;
-        while(tempHead->_next != nullptr){
-            tempHead = tempHead->_next;
+
+    void rprint(){  
+        Node *tempTail = _tail;
+        while(tempTail != nullptr){
+            std::cout << tempTail->value << ' ';
+            tempTail = tempTail->prev;
         }
-        while(tempHead != nullptr){
-            std::cout << tempHead->_data << ' ';
-            tempHead = tempHead->_prev;
-        }
+        std::cout << std::endl;
+
     }
+
+private: // auxillary functions
+    Node *createNewNode(int value, Node *prev = nullptr, Node *next = nullptr){
+        Node *tempNode = new Node();
+        tempNode->value = value;
+        tempNode->prev = prev;
+        tempNode->next = next;
+        return tempNode;
+    }
+
 private:
-    int _data,
-        _size = 1;
-    DoublyLinkedList *_prev, *_next;
+    Node *_head, *_tail;
+    int _size;
+
 };
 
 #endif // DOUBLY_LINKED_LIST_H
