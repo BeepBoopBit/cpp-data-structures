@@ -3,42 +3,48 @@
 
 #include <iostream>
 
+// Stack using Linked List
 class Stack{
+private:
+    struct Node{
+        int value;
+        Node *next;
+    };
+
 public:
-    Stack(int size){
-        _stack = new int[size];
-        _size = size;
-    }
     Stack(){
-        _stack = new int[10];
-        _size = 10;
+        _top = nullptr;
+        _size = 0;
     }
-    int peek(){
-        return _stack[_top];
-    }
-    void push(int data){
-        _stack[_top++] = data;
-    }
+
+public:
     int pop(){
-        return _stack[--_top];
+        int tempValue = _top->value;
+        Node *tempTop = _top;
+        _top = _top->next;
+        delete tempTop;
+        --_size;
+        return tempValue;
     }
-    bool isEmpty(){
-        if(_size == 0){
-            return true;
-        }
-        return false;
+
+    void push(int value){
+        Node *newTop = new Node();
+        newTop->value = value;
+        newTop->next = _top;
+        _top = newTop;
+        ++_size;
     }
-    bool isFull(){
-        if(_top >= _size){
-            return true;
-        }
-        return false;
+
+    int size(){
+        return _size;
     }
 
 private:
-    int _top = 0,
-        _size = 0;
-    int *_stack = nullptr;
+
+private:
+    Node *_top;
+    int _size;
+
 };
 
 #endif // STACK_H
