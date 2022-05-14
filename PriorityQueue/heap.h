@@ -41,6 +41,21 @@ public:
         return value;
     }
 
+    int peek(){
+        return _arr[0];
+    }
+
+    void remove(int value){
+        for(int i = 0; i < _size; ++i){
+            if(_arr[i] == value){
+                siftDown(i);
+                break;
+            }
+        }
+        --_currIndex;
+        --_size;
+    }
+
 public:
     void print(){
         for(int i = 0; i < _size; ++i){
