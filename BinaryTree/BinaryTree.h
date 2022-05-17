@@ -19,19 +19,40 @@ public:
 
     void push(int value){
         if(_head == nullptr){
-            _head = new Node();
-            _head->value = value;
+            _head = createNewNode(value);
         }else{
             traversePush(_head, value);
         }
     }
 
-    void find(int value){
-        Node *tempNode = findAux(_head, value);
-        if(tempNode == nullptr){
-            std::cout << "Value not Founded" << std::endl;
+    void pop(){
+        Node *tempNode = _head;
+        int value = tempNode->value;
+        tempNode = siftDown(tempNode);
+        tempNode = tempNode->parent;
+        if(tempNode->left != nullptr && tempNode->left->value == value){
+            delete tempNode->left;
+            tempNode->left = nullptr;
         }else{
-            std::cout << "Value was Found" << std::endl;
+            delete tempNode->right;
+            tempNode->right = nullptr;
+        }
+    }
+
+    void remove(int value){
+        Node *tempNode = find(value);
+        if(tempNode == _head){
+            pop();
+        }else{
+            tempNode = siftDown(tempNode);
+            tempNode = tempNode->parent;
+            if(tempNode->left != nullptr && tempNode->left->value == value){
+                delete tempNode->left;
+                tempNode->left = nullptr;
+            }else{
+                delete tempNode->right;
+                tempNode->right = nullptr;
+            }
         }
     }
 
@@ -40,12 +61,41 @@ public: // debug
         printAux(_head);
     }
 private:
+    Node *siftDown(Node *node){
+        if(node->left == nullptr && node->right == nullptr){
+            return node;
+        }else if(node->left == nullptr && node->right != nullptr){
+            std::swap(node->value, node->right->value);
+            siftDown(node->right);
+        }else{
+            std::swap(node->value, node->left->value);
+            siftDown(node->left);
+        }
+    }
+
+    Node *createNewNode(int value){
+        Node *tempNewNode = new Node();
+        tempNewNode->value = value;
+        tempNewNode->left = nullptr;
+        tempNewNode->right = nullptr;
+        tempNewNode->parent = nullptr;
+        return tempNewNode;
+    }
+
+    Node *find(int value){
+        Node *tempNode = findAux(_head, value);
+        if(tempNode == nullptr){
+            std::cout << "Value not Founded" << std::endl;
+            exit(-1);
+        }
+        return tempNode;
+    }
 
     Node *findAux(Node *node, int value){
-        if(node == nullptr){
-            return nullptr;
-        }else if(node->value == value){
+        if(node->value == value){
             return node;
+        }else if(node->left == nullptr && node->right == nullptr){
+            return nullptr;
         }else if(node->value < value){
             return findAux(node->right, value);
         }
@@ -65,11 +115,11 @@ private:
     void traversePush(Node *node, int value){
 
         if(node->left == nullptr && node->value > value){
-            node->left = new Node();
-            node->left->value = value;
+            node->left = createNewNode(value);
+            node->left->parent = node;
         }else if(node->right == nullptr && node->value < value){
-            node->right = new Node();
-            node->right->value = value;
+            node->right = createNewNode(value);
+            node->right->parent = node;
         }else if(node->value > value){
             traversePush(node->left, value);
         }else{
