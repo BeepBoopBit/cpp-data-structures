@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+// NOT A GOOD IMPLEMENTATION
 class BinaryTree{
 private:
     struct Node{
